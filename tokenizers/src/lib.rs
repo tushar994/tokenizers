@@ -59,3 +59,10 @@ pub use tk_convert::{
     ConvertError, canonicalize_file, canonicalize_post_processor, canonicalize_str,
     canonicalize_value, convert,
 };
+
+// ---------------------------------------------------------------------------
+// `from_pretrained` — downloads and builds in one call. Lives in its own crate, `tk-hub`: see
+// that crate's doc comment for why it can't live in any of the three above instead.
+// ---------------------------------------------------------------------------
+#[cfg(feature = "http")]
+pub use tk_hub::from_pretrained;

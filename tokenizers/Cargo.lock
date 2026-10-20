@@ -3193,6 +3193,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "tk-hub"
+version = "0.1.0-dev.2"
+dependencies = [
+ "tk-convert",
+ "tk-encode",
+ "tk-serialize",
+]
+
+[[package]]
 name = "tk-serialize"
 version = "0.1.0-dev.2"
 dependencies = [
@@ -3250,6 +3259,7 @@ dependencies = [
  "tempfile",
  "tk-convert",
  "tk-encode",
+ "tk-hub",
  "tk-serialize",
  "tracing",
  "tracing-subscriber",

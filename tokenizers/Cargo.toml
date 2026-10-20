@@ -1,6 +1,6 @@
 [workspace]
 resolver = "3"
-members = ["bitmap_gen", "bitcannon", "tk-encode", "tk-serialize", "tk-convert"]
+members = ["bitmap_gen", "bitcannon", "tk-encode", "tk-serialize", "tk-convert", "tk-hub"]
 exclude = ["tk-train"]
 
 [package]
@@ -64,12 +64,15 @@ tk-serialize = { path = "tk-serialize", version = "0.1.0-dev.2", default-feature
   "wordlevel",
   "unicode-scripts",
 ] }
+# Optional: only the `from_pretrained` glue needs it, and only when `http` is on. Kept out of the
+# default dependency set so a build without `http` never links its networking stack.
+tk-hub = { path = "tk-hub", version = "0.1.0-dev.2", optional = true }
 
 [features]
 default = ["progressbar"]
 progressbar = ["tk-encode/progressbar"]
 regex = ["tk-encode/fancy-regex"]
-http = ["tk-encode/http"]
+http = ["tk-encode/http", "dep:tk-hub"]
 unstable_wasm = ["tk-encode/unstable_wasm"]
 
 

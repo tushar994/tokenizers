@@ -1,0 +1,41 @@
+[package]
+name = "tk-hub"
+version = "0.1.0-dev.2"
+edition = "2024"
+authors = [
+  "Arthur Zucker <arthur@huggingface.co>",
+  "Nicolas Patry <patry.nicolas@protonmail.com>",
+  "Anthony MOI <m.anthony.moi@gmail.com>",
+  "Luc Georges <luc@huggingface.co>",
+  "Simon Brandeis <simon@huggingface.co>",
+]
+homepage = "https://github.com/huggingface/tokenizers"
+repository = "https://github.com/huggingface/tokenizers"
+documentation = "https://docs.rs/tokenizers/"
+license = "Apache-2.0"
+keywords = ["tokenizer", "NLP", "huggingface", "huggingface-hub"]
+description = """
+Builds a working tokenizer straight from a Hugging Face Hub model id: downloads
+`tokenizer.json` (`tk-encode`'s downloader), upgrades it if it predates the
+canonical format (`tk-convert`), then reads it (`tk-serialize`). Kept as its own
+crate so neither of those two carries the other's dependency weight just for this.
+"""
+
+[package.metadata.docs.rs]
+all-features = true
+
+[lib]
+name = "tk_hub"
+path = "src/lib.rs"
+
+[dependencies]
+# The downloader. This crate exists only to use it, so its `http` feature (networking: `hf-hub`,
+# `reqwest`, `tokio`) is not optional here the way it is on `tk-encode` itself. Default features
+# kept on (not `default-features = false`) so `bpe` -- on by default there -- stays on here too;
+# that is the one model every current SOTA tokenizer on the Hub uses.
+tk-encode = { path = "../tk-encode", version = "0.1.0-dev.2", features = ["http"] }
+# The legacy-format upgrade pass. `tk-encode` cannot depend on this (circular: `tk-serialize`,
+# below, already depends on `tk-encode`), which is why this glue cannot live in either of them.
+tk-convert = { path = "../tk-convert", version = "0.1.0-dev.2" }
+# The canonical-format reader. Default features kept on for the same reason as `tk-encode` above.
+tk-serialize = { path = "../tk-serialize", version = "0.1.0-dev.2" }
